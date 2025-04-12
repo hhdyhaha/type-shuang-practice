@@ -21,19 +21,23 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="font-bold text-xl">Next应用</span>
+            <Link href="/" className="flex items-center gap-2 font-bold">
+              <span className="font-bold text-xl">双拼练习</span>
+              <span className="text-sm text-muted-foreground">Dual Pinyin Practice</span>
             </Link>
           </div>
           
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-4">
               <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                首页
+                实践
               </Link>
               <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                关于
+                设置
               </Link>
+              <Button variant="outline" size="sm">
+                登录/注册
+              </Button>
             </div>
             
             <ThemeToggle />
