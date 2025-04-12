@@ -26,7 +26,7 @@ export default function Navbar() {
               <span className="text-sm text-muted-foreground">Dual Pinyin Practice</span>
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-4">
               <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
@@ -39,9 +39,9 @@ export default function Navbar() {
                 登录/注册
               </Button>
             </div>
-            
+
             <ThemeToggle />
-            
+
             <div className="md:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
@@ -55,22 +55,32 @@ export default function Navbar() {
                   <SheetDescription>
                     选择以下链接导航到对应页面
                   </SheetDescription>
+
                   <div className="flex flex-col space-y-3 mt-8">
-                    <Link 
-                      href="/" 
+                    <Link
+                      href="/"
                       className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
                       onClick={() => setOpen(false)}
                     >
                       首页
                     </Link>
-                    <Link 
-                      href="/about" 
+                    <Link
+                      href="/about"
                       className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
                       onClick={() => setOpen(false)}
                     >
-                      关于
+                      设置
                     </Link>
+                    <Link
+                      href="/login"
+                      className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
+                      onClick={() => setOpen(false)}
+                    >
+                      登录/注册
+                    </Link>
+
                   </div>
+
                 </SheetContent>
               </Sheet>
             </div>
