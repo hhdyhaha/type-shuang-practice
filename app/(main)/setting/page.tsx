@@ -6,8 +6,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { useSettingsStore } from "@/store/useSettingsStore"
+import { usePathname } from 'next/navigation'
 
 export default function SettingPage() {
+  const pathname = usePathname()
   const { 
     currentScheme, 
     soundEnabled,
@@ -16,10 +18,19 @@ export default function SettingPage() {
     initializeSettings 
   } = useSettingsStore()
 
-  // 初始化设置
+  // 在页面加载和路由变化时初始化设置
   useEffect(() => {
-    initializeSettings()
-  }, [initializeSettings])
+    const savedSettings = localStorage.getItem('typing-settings')
+    if (savedSettings) {
+      const { currentScheme } = JSON.parse(savedSettings)
+      // 确保从localStorage恢复的设置也被应用到全局配置
+      if (currentScheme && currentScheme.name) {
+        setScheme(currentScheme.name.toLowerCase() as any)
+      }
+    } else {
+      initializeSettings()
+    }
+  }, [pathname, setScheme, initializeSettings])
 
   return (
     <div className="container max-w-2xl mx-auto px-4 py-8">

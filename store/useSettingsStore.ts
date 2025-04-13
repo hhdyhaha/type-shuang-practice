@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { schemes, type ShuangpinScheme } from '@/lib/shuangpin/config'
+import { schemes, type ShuangpinScheme, updateCurrentScheme } from '@/lib/shuangpin/config'
 
 interface SettingsState {
   currentScheme: ShuangpinScheme
@@ -21,13 +21,17 @@ export const useSettingsStore = create<SettingsState>()(
       ...DEFAULT_SETTINGS,
       setScheme: (schemeName) => {
         const newScheme = schemes[schemeName]
+        updateCurrentScheme(schemeName) // 同步更新全局配置
         set({ currentScheme: newScheme })
       },
       setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
-      initializeSettings: () => set(DEFAULT_SETTINGS)
+      initializeSettings: () => {
+        set(DEFAULT_SETTINGS)
+        updateCurrentScheme('xiaohe') // 初始化时同步更新全局配置
+      }
     }),
     {
-      name: 'typing-settings', // localStorage 的键名
+      name: 'typing-settings',
       partialize: (state) => ({
         currentScheme: state.currentScheme,
         soundEnabled: state.soundEnabled,
