@@ -12,7 +12,7 @@ import {
 import { Moon, Sun, Laptop } from "lucide-react"
 
 export function ThemeToggle() {
-  const { theme, toggleTheme, setTheme, applyTheme } = useTheme()
+  const { theme, setTheme, applyTheme } = useTheme()
   // 客户端渲染标记
   const [mounted, setMounted] = useState(false)
 

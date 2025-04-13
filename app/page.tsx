@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowRight, FileText, CircleCheck, Cog } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -11,7 +12,9 @@ export default function Home() {
           使用我们专注的练习平台，提高您的中文打字速度和准确性。通过互动练习学习双拼方案。
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <Button size="lg">开始练习 <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          <Link href="/practice">
+            <Button size="lg">开始练习 <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          </Link>
           <Button variant="outline" size="lg">自定义设置</Button>
         </div>
       </section>
