@@ -6,6 +6,11 @@ import { PracticeStats } from "@/components/practice/PracticeStats"
 import { KeymapHint } from "@/components/practice/KeymapHint"
 import { getCharacterShuangpin, isShuangpinCorrect } from "@/lib/shuangpin/utils"
 import { useSettingsStore } from "@/store/useSettingsStore"
+import { isMobile } from 'react-device-detect'
+import { Card } from "@/components/ui/card"
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
 
 const sampleText = "双拼输入法是一种快速的中文输入方式"
 
@@ -110,6 +115,30 @@ export default function PracticePage() {
       clearInterval(resetTimer)
     }
   }, [currentIndex, currentInput, nextKeys, soundEnabled])
+
+  // 如果是移动设备，显示提示页面
+  if (isMobile) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <Card className="p-6 text-center space-y-4">
+            <h2 className="text-xl font-semibold">请在电脑上练习</h2>
+            <p className="text-muted-foreground">
+              为了获得最佳的练习体验，请使用电脑访问本站。双拼打字练习需要完整的键盘支持。
+            </p>
+            <div className="pt-4">
+              <Link href="/">
+                <Button variant="outline" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  返回首页
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
