@@ -15,7 +15,9 @@ export default function Home() {
           <Link href="/practice">
             <Button size="lg">开始练习 <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </Link>
-          <Button variant="outline" size="lg">自定义设置</Button>
+          <Link href="/setting">
+            <Button variant="outline" size="lg">自定义设置</Button>
+          </Link>
         </div>
       </section>
 
