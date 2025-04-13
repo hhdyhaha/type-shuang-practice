@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useTheme } from '../store/useThemeStore'
+import { useTheme } from '@/app/store/useThemeStore'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Moon, Sun, Laptop } from "lucide-react"
 
-export default function ThemeToggle() {
+export function ThemeToggle() {
   const { theme, toggleTheme, setTheme, applyTheme } = useTheme()
   // 客户端渲染标记
   const [mounted, setMounted] = useState(false)

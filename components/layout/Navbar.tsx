@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import ThemeToggle from './ThemeToggle';
+import { ThemeToggle } from './ThemeToggle';
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
-export default function Navbar() {
+export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -78,9 +78,7 @@ export default function Navbar() {
                     >
                       登录/注册
                     </Link>
-
                   </div>
-
                 </SheetContent>
               </Sheet>
             </div>
@@ -89,4 +87,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-} 
+}
