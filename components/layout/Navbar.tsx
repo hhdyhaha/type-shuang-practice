@@ -21,10 +21,10 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2 font-bold">
-              <span className="font-bold text-xl">双拼练习</span>
-              <span className="text-sm text-muted-foreground">Dual Pinyin Practice</span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/" className="font-bold text-xl">双拼练习</Link>
+              <span className="text-sm text-muted-foreground hidden md:inline">Dual Pinyin Practice</span>
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">
