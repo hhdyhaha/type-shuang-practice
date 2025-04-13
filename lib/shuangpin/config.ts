@@ -68,12 +68,100 @@ export const msConfig: ShuangpinScheme = {
   }
 }
 
-// 其他方案可以继续添加...
+// 自然码双拼方案
+export const ziranjmaConfig: ShuangpinScheme = {
+  name: '自然码',
+  description: '自然码是一种常用的双拼方案，由王永民设计。特点是编码规则自然、容易记忆。',
+  author: '王永民',
+  initial: {
+    'b': 'b', 'c': 'c', 'd': 'd', 'f': 'f', 'g': 'g', 'h': 'h',
+    'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'p': 'p',
+    'q': 'q', 'r': 'r', 's': 's', 't': 't', 'w': 'w', 'x': 'x',
+    'y': 'y', 'z': 'z', 'ch': 'i', 'sh': 'u', 'zh': 'v'
+  },
+  final: {
+    'a': 'a', 'ai': 's', 'an': 'f', 'ang': 'g',
+    'ao': 'd', 'e': 'e', 'ei': 'w', 'en': 'r',
+    'eng': 't', 'i': 'i', 'ia': 'x', 'ian': 'm',
+    'iang': 'l', 'iao': 'n', 'ie': 'p', 'in': 'b',
+    'ing': 'k', 'iong': 's', 'iu': 'q', 'o': 'o',
+    'ong': 's', 'ou': 'z', 'u': 'u', 'ua': 'x',
+    'uai': 'k', 'uan': 'r', 'uang': 'l', 'ue': 'v',
+    'ui': 'v', 'un': 'y', 'uo': 'o', 'v': 'y',
+    've': 'v'
+  },
+  zero: {
+    'a': 'aa', 'ai': 'as', 'an': 'af', 'ang': 'ag',
+    'ao': 'ad', 'e': 'ee', 'ei': 'ew', 'en': 'er',
+    'eng': 'et', 'er': 'eq', 'o': 'oo', 'ou': 'oz'
+  }
+}
+
+// 智能ABC双拼方案
+export const zhineabcConfig: ShuangpinScheme = {
+  name: '智能ABC',
+  description: '智能ABC双拼是一种经典的双拼方案，由郑易里开发。',
+  author: '郑易里',
+  initial: {
+    'b': 'b', 'c': 'c', 'd': 'd', 'f': 'f', 'g': 'g', 'h': 'h',
+    'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'p': 'p',
+    'q': 'q', 'r': 'r', 's': 's', 't': 't', 'w': 'w', 'x': 'x',
+    'y': 'y', 'z': 'z', 'ch': 'e', 'sh': 'v', 'zh': 'a'
+  },
+  final: {
+    'a': 'a', 'ai': 'l', 'an': 'j', 'ang': 'h',
+    'ao': 'k', 'e': 'e', 'ei': 'q', 'en': 'f',
+    'eng': 'g', 'i': 'i', 'ia': 'd', 'ian': 'w',
+    'iang': 't', 'iao': 'z', 'ie': 'x', 'in': 'c',
+    'ing': 'y', 'iong': 's', 'iu': 'r', 'o': 'o',
+    'ong': 's', 'ou': 'b', 'u': 'u', 'ua': 'd',
+    'uai': 'y', 'uan': 'p', 'uang': 't', 'ue': 'm',
+    'ui': 'n', 'un': 'n', 'uo': 'o', 'v': 'v',
+    've': 'm'
+  },
+  zero: {
+    'a': 'oa', 'ai': 'ol', 'an': 'oj', 'ang': 'oh',
+    'ao': 'ok', 'e': 'oe', 'ei': 'oq', 'en': 'of',
+    'eng': 'og', 'er': 'or', 'o': 'oo', 'ou': 'ob'
+  }
+}
+
+// 紫光双拼方案
+export const ziguangConfig: ShuangpinScheme = {
+  name: '紫光双拼',
+  description: '紫光双拼是由紫光公司开发的输入方案，在早期的紫光拼音输入法中使用。',
+  author: '紫光公司',
+  initial: {
+    'b': 'b', 'c': 'c', 'd': 'd', 'f': 'f', 'g': 'g', 'h': 'h',
+    'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'p': 'p',
+    'q': 'q', 'r': 'r', 's': 's', 't': 't', 'w': 'w', 'x': 'x',
+    'y': 'y', 'z': 'z', 'ch': 'u', 'sh': 'i', 'zh': 'v'
+  },
+  final: {
+    'a': 'a', 'ai': 'p', 'an': 'r', 'ang': 's',
+    'ao': 'q', 'e': 'e', 'ei': 'k', 'en': 'w',
+    'eng': 't', 'i': 'i', 'ia': 'b', 'ian': 'f',
+    'iang': 'g', 'iao': 'k', 'ie': 'm', 'in': 'l',
+    'ing': 'h', 'iong': 'y', 'iu': 'n', 'o': 'o',
+    'ong': 'y', 'ou': 'c', 'u': 'u', 'ua': 'b',
+    'uai': 'h', 'uan': 'd', 'uang': 'g', 'ue': 'x',
+    'ui': 'j', 'un': 'z', 'uo': 'o', 'v': 'v',
+    've': 'x'
+  },
+  zero: {
+    'a': 'aa', 'ai': 'ap', 'an': 'ar', 'ang': 'as',
+    'ao': 'aq', 'e': 'ee', 'ei': 'ek', 'en': 'ew',
+    'eng': 'et', 'er': 'er', 'o': 'oo', 'ou': 'oc'
+  }
+}
 
 // 所有可用的方案
 export const schemes = {
   xiaohe: xiaoheConfig,
-  ms: msConfig
+  ms: msConfig,
+  ziranma: ziranjmaConfig,
+  zhinengabc: zhineabcConfig,
+  ziguang: ziguangConfig
 } as const
 
 // 默认方案
