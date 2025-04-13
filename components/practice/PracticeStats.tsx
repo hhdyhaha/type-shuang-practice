@@ -11,8 +11,7 @@ interface PracticeStatsProps {
 
 export function PracticeStats({ 
   startTime, 
-  correctCount, 
-  incorrectCount,
+  correctCount,
   totalLength,
   totalKeystrokes,
   wrongKeystrokes

@@ -1,5 +1,4 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 type KeyStatus = 'default' | 'correct' | 'incorrect'

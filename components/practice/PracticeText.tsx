@@ -1,5 +1,4 @@
 import React from 'react'
-import { cn } from '@/lib/utils'
 import { getShuangpinHint } from '@/lib/shuangpin/utils'
 
 interface PracticeTextProps {
@@ -8,7 +7,7 @@ interface PracticeTextProps {
   typedText: string
 }
 
-export function PracticeText({ text, currentIndex, typedText }: PracticeTextProps) {
+export function PracticeText({ text, currentIndex }: PracticeTextProps) {
   // 获取当前字符的拼音和双拼提示
   const currentChar = text[currentIndex]
   const hint = currentChar ? getShuangpinHint(currentChar) : null
