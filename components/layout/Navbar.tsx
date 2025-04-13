@@ -32,8 +32,8 @@ export function Navbar() {
               <Link href="/practice" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
                 练习
               </Link>
-              <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                关于
+              <Link href="/setting" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
+                设置
               </Link>
               <Button variant="outline" size="sm">
                 登录/注册
