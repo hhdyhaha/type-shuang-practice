@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { createZustandProvider } from '@/lib/zustandProviders'
+import { createZustandProvider } from '@/store/zustandProviders'
 import useThemeStore from '@/store/useThemeStore'
 
 // 创建主题Store提供者
