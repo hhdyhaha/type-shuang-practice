@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js 应用",
-  description: "使用 Next.js 和 TailwindCSS 构建的应用",
+  title: "双拼练习",
+  description: "使用我们专注的练习平台，提高您的中文打字速度和准确性。通过互动练习学习双拼方案。",
 };
 
 export default function RootLayout({

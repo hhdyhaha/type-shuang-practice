@@ -35,9 +35,9 @@ export function Navbar() {
               <Link href="/setting" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
                 设置
               </Link>
-              <Button variant="outline" size="sm">
+              {/* <Button variant="outline" size="sm">
                 登录/注册
-              </Button>
+              </Button> */}
             </div>
 
             <ThemeToggle />
@@ -71,13 +71,13 @@ export function Navbar() {
                     >
                       关于
                     </Link>
-                    <Link
+                    {/* <Link
                       href="/login"
                       className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
                       onClick={() => setOpen(false)}
                     >
                       登录/注册
-                    </Link>
+                    </Link> */}
                   </div>
                 </SheetContent>
               </Sheet>
