@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { createZustandProvider } from './lib/zustandProviders'
-import useThemeStore from './store/useThemeStore'
+import { createZustandProvider } from '@/lib/zustandProviders'
+import useThemeStore from '@/store/useThemeStore'
 
 // 创建主题Store提供者
 const ThemeStoreProvider = createZustandProvider(useThemeStore)
@@ -43,4 +43,4 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       {children}
     </ThemeStoreProvider>
   )
-} 
+}

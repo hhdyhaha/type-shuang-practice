@@ -29,11 +29,11 @@ export function Navbar() {
 
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-4">
-              <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                实践
+              <Link href="/practice" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
+                练习
               </Link>
               <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground">
-                设置
+                关于
               </Link>
               <Button variant="outline" size="sm">
                 登录/注册
@@ -58,18 +58,18 @@ export function Navbar() {
 
                   <div className="flex flex-col space-y-3 mt-8">
                     <Link
-                      href="/"
+                      href="/practice"
                       className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
                       onClick={() => setOpen(false)}
                     >
-                      首页
+                      练习
                     </Link>
                     <Link
                       href="/about"
                       className="px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
                       onClick={() => setOpen(false)}
                     >
-                      设置
+                      关于
                     </Link>
                     <Link
                       href="/login"

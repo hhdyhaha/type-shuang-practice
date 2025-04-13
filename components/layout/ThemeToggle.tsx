@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useTheme } from '@/app/store/useThemeStore'
+import { useTheme } from '@/store/useThemeStore'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,

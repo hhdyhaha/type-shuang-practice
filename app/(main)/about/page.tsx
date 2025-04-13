@@ -15,4 +15,4 @@ export default function AboutPage() {
       </p>
     </div>
   );
-} 
+}

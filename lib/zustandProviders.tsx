@@ -25,4 +25,4 @@ export function useZustandStore<S, U>(
 ): U {
   const value = useStore(store, selector)
   return value
-} 
+}
