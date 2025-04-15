@@ -10,7 +10,8 @@ import { isMobile } from 'react-device-detect'
 import { Card } from "@/components/ui/card"
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Sparkles } from "lucide-react"
+import GenerateDialog from '@/components/practice/GenerateDialog'
 
 const sampleText = "双拼输入法是一种快速的中文输入方式"
 
@@ -36,6 +37,13 @@ export default function PracticePage() {
   const pinyinInfo = currentChar ? getCharacterShuangpin(currentChar) : null
   const nextKeys = pinyinInfo ? [pinyinInfo.initialKey.toUpperCase(), pinyinInfo.finalKey.toUpperCase()] : []
   
+  // 控制GenerateDialog的显示
+  const [showGenerateDialog, setShowGenerateDialog] = useState(false)
+
+  const handleGenerateClick = () => {
+    setShowGenerateDialog(true)
+  }
+
   useEffect(() => {
     errorSoundRef.current = new Audio('/sounds/error.mp3')
   }, [])
@@ -154,6 +162,16 @@ export default function PracticePage() {
               wrongKeystrokes={wrongKeystrokes}
             />
           </div>
+
+          <div className="mb-4 text-right">
+            <Button className='bg-muted text-black hover:bg-muted/50' onClick={handleGenerateClick}>
+              <Sparkles />AI 生成练习文章
+            </Button>
+          </div>
+
+          {showGenerateDialog && (
+            <GenerateDialog />
+          )}
           
           <div className="mb-8 p-4 bg-muted/50 rounded-lg">
             <PracticeText 
