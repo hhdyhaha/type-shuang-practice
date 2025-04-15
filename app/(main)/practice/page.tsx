@@ -164,14 +164,15 @@ export default function PracticePage() {
           </div>
 
           <div className="mb-4 text-right">
-            <Button className='bg-muted text-black hover:bg-muted/50' onClick={handleGenerateClick}>
+            <Button className='bg-muted  hover:bg-muted/50 text-foreground' onClick={handleGenerateClick}>
               <Sparkles />AI 生成练习文章
             </Button>
           </div>
 
-          {showGenerateDialog && (
-            <GenerateDialog />
-          )}
+          <GenerateDialog 
+            open={showGenerateDialog} 
+            onOpenChange={setShowGenerateDialog}
+          />
           
           <div className="mb-8 p-4 bg-muted/50 rounded-lg">
             <PracticeText 
