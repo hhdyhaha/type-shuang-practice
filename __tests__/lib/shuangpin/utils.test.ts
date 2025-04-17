@@ -1,96 +1,110 @@
-import { describe, it, expect } from 'vitest'
-import { getCharacterShuangpin, isShuangpinCorrect, pinyinToShuangpin, getShuangpinHint } from '@/lib/shuangpin/utils'
-import { ShuangpinSchemes } from '@/lib/shuangpin/config'
+import { describe, expect, it, vi, beforeAll } from 'vitest'
+import * as utils from '@/lib/shuangpin/utils'
+import { currentScheme, updateCurrentScheme } from '@/lib/shuangpin/config'
 
-describe('双拼工具函数', () => {
-  describe('getCharacterShuangpin', () => {
-    it('应该正确获取汉字的双拼组合', () => {
-      const result = getCharacterShuangpin('测', ShuangpinSchemes.MS)
-      expect(result).toEqual({
-        initial: 'c',
-        final: 'e',
-        tone: 4,
-        pinyin: 'ce'
-      })
-    })
+// 模拟pinyin-pro库
+vi.mock('pinyin-pro', () => ({
+  pinyin: vi.fn((char, options) => {
+    if (char === '中') return 'zhong'
+    if (char === '文') return 'wen'
+    if (char === '你') return 'ni'
+    if (char === '好') return 'hao'
+    if (char === '爱') return 'ai'
+    return ''
+  })
+}))
 
-    it('应该正确处理零声母的情况', () => {
-      const result = getCharacterShuangpin('爱', ShuangpinSchemes.MS)
-      expect(result.initial).toBe('')
-      expect(result.final).toBeTruthy()
-    })
+describe('shuangpin utils', () => {
+  // 在测试前确保使用小鹤双拼方案
+  beforeAll(() => {
+    updateCurrentScheme('xiaohe')
+  })
 
-    it('对于非汉字应该返回null', () => {
-      const result = getCharacterShuangpin('A', ShuangpinSchemes.MS)
-      expect(result).toBeNull()
+  describe('getCharacterPinyin', () => {
+    it('应该返回正确的拼音', () => {
+      expect(utils.getCharacterPinyin('中')).toBe('zhong')
+      expect(utils.getCharacterPinyin('文')).toBe('wen')
+      expect(utils.getCharacterPinyin('你')).toBe('ni')
     })
   })
 
-  describe('isShuangpinCorrect', () => {
-    it('应该正确验证双拼输入', () => {
-      // 测试"测"字的双拼输入，在微软双拼下是ce
-      const char = '测'
-      const input = 'ce'
-      const result = isShuangpinCorrect(char, input, ShuangpinSchemes.MS)
-      expect(result).toBe(true)
-    })
-
-    it('应该正确验证错误的双拼输入', () => {
-      const char = '测'
-      const input = 'wrong'
-      const result = isShuangpinCorrect(char, input, ShuangpinSchemes.MS)
-      expect(result).toBe(false)
-    })
-
-    it('应该正确处理部分输入的情况', () => {
-      const char = '测'
-      const input = 'c' // 只输入声母
-      const result = isShuangpinCorrect(char, input, ShuangpinSchemes.MS)
-      expect(result).toBe(false)
-    })
-
-    it('应该支持不同的双拼方案', () => {
-      const char = '双'
+  describe('splitPinyin', () => {
+    it('应该正确拆分声母和韵母', () => {
+      // 有声母的情况
+      expect(utils.splitPinyin('zhong')).toEqual({
+        initial: 'zh',
+        final: 'ong'
+      })
       
-      // 测试微软双拼
-      expect(isShuangpinCorrect(char, 'ul', ShuangpinSchemes.MS)).toBe(true)
+      expect(utils.splitPinyin('wen')).toEqual({
+        initial: 'w',
+        final: 'en'
+      })
       
-      // 测试小鹤双拼
-      expect(isShuangpinCorrect(char, 'ul', ShuangpinSchemes.XIAOHE)).toBe(true)
+      // 零声母的情况
+      expect(utils.splitPinyin('ai')).toEqual({
+        initial: '',
+        final: 'ai'
+      })
     })
   })
 
   describe('pinyinToShuangpin', () => {
-    it('应该正确转换普通拼音', () => {
-      const result = pinyinToShuangpin('zhong')
-      expect(result).toEqual({
-        shuangpin: 'vt',
-        initialPart: 'zh',
-        finalPart: 'ong',
-        initialKey: 'v',
-        finalKey: 't'
-      })
+    it('应该正确将拼音转换为双拼', () => {
+      // 测试zhong -> vh (小鹤双拼)
+      const result1 = utils.pinyinToShuangpin('zhong')
+      expect(result1.shuangpin).toBe('vs')
+      expect(result1.initialKey).toBe('v')
+      expect(result1.finalKey).toBe('s')
+      
+      // 测试wen -> wf (小鹤双拼)
+      const result2 = utils.pinyinToShuangpin('wen')
+      expect(result2.shuangpin).toBe('wf')
+      expect(result2.initialKey).toBe('w')
+      expect(result2.finalKey).toBe('f')
+      
+      // 测试零声母情况
+      const result3 = utils.pinyinToShuangpin('ai')
+      expect(result3.shuangpin).toBe('ai')
+      expect(result3.initialKey).toBe('a')
+      expect(result3.finalKey).toBe('i')
     })
+  })
 
-    it('应该正确处理零声母', () => {
-      const result = pinyinToShuangpin('ai')
-      expect(result.shuangpin).toBe('ai')
-      expect(result.initialPart).toBe('')
-      expect(result.finalPart).toBe('ai')
+  describe('getCharacterShuangpin', () => {
+    it('应该返回字符的拼音和双拼信息', () => {
+      const result = utils.getCharacterShuangpin('中')
+      expect(result.pinyin).toBe('zhong')
+      expect(result.shuangpin).toBe('vs')
+      expect(result.initialPart).toBe('zh')
+      expect(result.finalPart).toBe('ong')
+      expect(result.initialKey).toBe('v')
+      expect(result.finalKey).toBe('s')
+    })
+  })
+
+  describe('isShuangpinCorrect', () => {
+    it('应该正确判断输入的双拼是否正确', () => {
+      // 正确的情况
+      expect(utils.isShuangpinCorrect('中', 'vs')).toBe(true)
+      expect(utils.isShuangpinCorrect('好', 'hc')).toBe(true)
+      
+      // 错误的情况
+      expect(utils.isShuangpinCorrect('中', 'vh')).toBe(false)
+      expect(utils.isShuangpinCorrect('好', 'hl')).toBe(false)
+    })
+    
+    it('应该忽略大小写', () => {
+      expect(utils.isShuangpinCorrect('中', 'VS')).toBe(true)
+      expect(utils.isShuangpinCorrect('好', 'Hc')).toBe(true)
     })
   })
 
   describe('getShuangpinHint', () => {
-    it('应该返回正确的双拼提示信息', () => {
-      const hint = getShuangpinHint('中')
-      expect(hint).toEqual({
-        pinyin: 'zhong',
-        shuangpin: 'vt',
-        initialPart: 'zh',
-        finalPart: 'ong',
-        initialKey: 'v',
-        finalKey: 't'
-      })
+    it('应该返回字符的双拼提示信息', () => {
+      const hint = utils.getShuangpinHint('中')
+      expect(hint.pinyin).toBe('zhong')
+      expect(hint.shuangpin).toBe('vs')
     })
   })
-})
+}) 

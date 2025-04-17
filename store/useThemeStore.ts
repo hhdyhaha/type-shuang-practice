@@ -47,9 +47,20 @@ const useThemeStore = create<ThemeState>()(
         
         // 应用新主题
         if (theme === 'system') {
-          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light'
+          let systemTheme = 'light'
+          
+          // 安全地检查window.matchMedia是否可用
+          if (window.matchMedia && typeof window.matchMedia === 'function') {
+            try {
+              systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+            } catch (error) {
+              // 如果访问失败，默认使用light
+              console.error('访问matchMedia失败', error)
+            }
+          }
+          
           root.classList.add(systemTheme)
           // 设置data-theme属性，确保一些样式可以通过属性选择器生效
           root.setAttribute('data-theme', systemTheme)

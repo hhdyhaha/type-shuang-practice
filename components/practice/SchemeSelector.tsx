@@ -26,7 +26,7 @@ export function SchemeSelector({
           <DropdownMenuTrigger asChild>
             <Button variant="outline">{currentScheme.name}</Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" data-testid="dropdown-content">
             {Object.entries(schemes).map(([key, scheme]) => (
               <DropdownMenuItem
                 key={key}

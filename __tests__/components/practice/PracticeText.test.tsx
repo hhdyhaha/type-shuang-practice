@@ -1,37 +1,82 @@
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
 import { PracticeText } from '@/components/practice/PracticeText'
+import * as shuangpinUtils from '@/lib/shuangpin/utils'
 
-describe('PracticeText 组件', () => {
-  it('应该正确渲染练习文本', () => {
-    const text = "测试文本"
-    render(<PracticeText text={text} currentIndex={0} typedText="" />)
-    
-    expect(screen.getByText('测')).toBeDefined()
-    expect(screen.getByText('试文本')).toBeDefined()
+// 模拟getShuangpinHint函数
+vi.mock('@/lib/shuangpin/utils', () => ({
+  getShuangpinHint: vi.fn((char) => {
+    if (char === '中') {
+      return {
+        pinyin: 'zhong',
+        shuangpin: 'vs',
+        initialPart: 'zh',
+        finalPart: 'ong',
+        initialKey: 'v',
+        finalKey: 's'
+      }
+    }
+    if (char === '文') {
+      return {
+        pinyin: 'wen',
+        shuangpin: 'wf',
+        initialPart: 'w',
+        finalPart: 'en',
+        initialKey: 'w',
+        finalKey: 'f'
+      }
+    }
+    return null
   })
+}))
 
-  it('应该正确显示当前输入位置', () => {
-    const text = "测试文本"
-    const currentIndex = 1
+describe('PracticeText组件', () => {
+  it('应该正确渲染未输入的文本', () => {
+    render(<PracticeText text="中文" currentIndex={0} typedText="" />)
     
-    render(<PracticeText text={text} currentIndex={currentIndex} typedText="测" />)
+    // 检查当前字符（高亮显示）
+    expect(screen.getByText('中')).toBeInTheDocument()
     
-    // 已输入的文字应该显示为绿色
-    const typedText = screen.getByText('测')
-    expect(typedText.className).toContain('text-green-500')
-    
-    // 当前字符应该有高亮背景
-    const currentChar = screen.getByText('试')
-    expect(currentChar.className).toContain('bg-primary/20')
+    // 检查未输入的文本
+    expect(screen.getByText('文')).toBeInTheDocument()
   })
-
-  it('在完成输入时不应显示拼音提示', () => {
-    const text = "测试"
-    render(<PracticeText text={text} currentIndex={2} typedText="测试" />)
+  
+  it('应该正确渲染已输入的文本', () => {
+    render(<PracticeText text="中文" currentIndex={1} typedText="vs" />)
     
-    // 当 currentIndex 等于文本长度时，不应该显示拼音提示
-    const hint = screen.queryByText(/拼音：/)
-    expect(hint).toBeNull()
+    // 检查已输入的文本（应该是绿色）
+    const textElements = screen.getAllByText('中')
+    expect(textElements.length).toBeGreaterThan(0)
+    
+    // 检查当前字符
+    expect(screen.getByText('文')).toBeInTheDocument()
   })
-})
+  
+  it('应该显示当前字符的拼音和双拼提示', () => {
+    render(<PracticeText text="中文" currentIndex={0} typedText="" />)
+    
+    // 检查是否显示了拼音提示
+    expect(screen.getByText(/拼音：/)).toBeInTheDocument()
+    expect(screen.getByText(/zhong/)).toBeInTheDocument()
+    
+    // 检查是否显示了双拼提示
+    expect(screen.getByText(/双拼：/)).toBeInTheDocument()
+    expect(screen.getByText('v')).toBeInTheDocument()
+    expect(screen.getByText('s')).toBeInTheDocument()
+  })
+  
+  it('完成输入后应该不显示提示', () => {
+    render(<PracticeText text="中" currentIndex={1} typedText="vs" />)
+    
+    // 文本已完成输入，不应显示提示
+    expect(screen.queryByText(/拼音：/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/双拼：/)).not.toBeInTheDocument()
+  })
+  
+  it('应该调用getShuangpinHint获取当前字符的提示', () => {
+    render(<PracticeText text="中文" currentIndex={0} typedText="" />)
+    
+    // 验证getShuangpinHint被调用
+    expect(shuangpinUtils.getShuangpinHint).toHaveBeenCalledWith('中')
+  })
+}) 

@@ -1,74 +1,120 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { useThemeStore } from '@/store/useThemeStore'
-import type { Theme } from '@/store/useThemeStore'
+import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
+import useThemeStore, { useTheme } from '@/store/useThemeStore'
+import { renderHook, act } from '@testing-library/react'
+
+// 模拟window.matchMedia
+const mockMatchMedia = vi.fn().mockImplementation((query) => ({
+  matches: false, // 默认返回light模式
+  media: query,
+  onchange: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn(),
+}))
 
 describe('useThemeStore', () => {
+  // 在每个测试前重置store状态
   beforeEach(() => {
-    // 每个测试前重置状态
-    const store = useThemeStore.getState()
-    store.setTheme('system')
+    // 重置store状态
+    useThemeStore.setState({ theme: 'system' })
+    
+    // 模拟DOM操作
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.removeAttribute('data-theme')
+    
+    // 替换matchMedia实现
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: mockMatchMedia,
+    })
   })
 
-  it('应该有正确的初始状态', () => {
-    const state = useThemeStore.getState()
-    expect(state.theme).toBe('system')
+  it('应该有默认的system主题', () => {
+    expect(useThemeStore.getState().theme).toBe('system')
   })
 
   it('应该能够设置主题', () => {
-    const { setTheme } = useThemeStore.getState()
-    
-    setTheme('dark')
+    act(() => {
+      useThemeStore.getState().setTheme('dark')
+    })
     expect(useThemeStore.getState().theme).toBe('dark')
-    
-    setTheme('light')
-    expect(useThemeStore.getState().theme).toBe('light')
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
   })
 
   it('应该能够切换主题', () => {
-    const { toggleTheme, setTheme } = useThemeStore.getState()
+    // 确保window.matchMedia已定义
+    if (typeof window.matchMedia === 'undefined') {
+      window.matchMedia = mockMatchMedia
+    }
     
-    // 从 light 切换到 dark
-    setTheme('light')
-    toggleTheme()
+    // 初始为system
+    expect(useThemeStore.getState().theme).toBe('system')
+    
+    // 切换一次应该变为light
+    act(() => {
+      useThemeStore.getState().toggleTheme()
+    })
+    expect(useThemeStore.getState().theme).toBe('light')
+    
+    // 再切换应该变为dark
+    act(() => {
+      useThemeStore.getState().toggleTheme()
+    })
     expect(useThemeStore.getState().theme).toBe('dark')
     
-    // 从 dark 切换到 light
-    toggleTheme()
-    expect(useThemeStore.getState().theme).toBe('light')
+    // 再切换应该回到system
+    act(() => {
+      useThemeStore.getState().toggleTheme()
+    })
+    expect(useThemeStore.getState().theme).toBe('system')
   })
-
-  it('应该正确应用主题到文档', () => {
-    const { applyTheme, setTheme } = useThemeStore.getState()
-    
-    // 模拟 document.documentElement
-    const htmlElement = document.createElement('html')
-    vi.spyOn(document, 'documentElement', 'get').mockReturnValue(htmlElement)
-    
-    // 测试 light 主题
-    setTheme('light')
-    applyTheme()
-    expect(htmlElement.className).toBe('light')
-    
-    // 测试 dark 主题
-    setTheme('dark')
-    applyTheme()
-    expect(htmlElement.className).toBe('dark')
-  })
-
-  it('在系统主题下应该响应系统偏好', () => {
-    const { applyTheme, setTheme } = useThemeStore.getState()
-    
-    // 模拟 matchMedia
-    const mockMatchMedia = vi.fn((query) => ({
+  
+  it('应该正确应用system主题基于系统偏好', () => {
+    // 模拟系统暗色主题
+    mockMatchMedia.mockImplementationOnce((query) => ({
       matches: query === '(prefers-color-scheme: dark)',
+      media: query,
+      onchange: null,
       addEventListener: vi.fn(),
-      removeEventListener: vi.fn()
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }))
-    vi.spyOn(window, 'matchMedia').mockImplementation(mockMatchMedia)
     
-    setTheme('system')
-    applyTheme()
+    act(() => {
+      useThemeStore.getState().applyTheme()
+    })
     
-    expect(mockMatchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
   })
 })
+
+describe('useTheme hook', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+  
+  it('在客户端挂载后应返回正确的主题状态', () => {
+    const { result } = renderHook(() => useTheme())
+    
+    // 初始挂载状态应返回默认值
+    expect(result.current.theme).toBe('system')
+    
+    // 触发setMounted(true)的效果
+    act(() => {
+      vi.runAllTimers() // 触发useEffect
+    })
+    
+    // 确保能够调用设置主题方法
+    act(() => {
+      result.current.setTheme('dark')
+    })
+    
+    expect(useThemeStore.getState().theme).toBe('dark')
+  })
+}) 
